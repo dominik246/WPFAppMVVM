@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WPFAppMVVM": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "connectionString": "Data Source=(localdb)\\ProjectsV13;Initial Catalog=SQLBackend;Integrated Security=True;Pooling=False;Connect Timeout=30"
+      }
+    }
+  }
+}
