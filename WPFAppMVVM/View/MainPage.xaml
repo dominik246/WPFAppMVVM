@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:WPFAppMVVM.ViewModel"
+        xmlns:converters="clr-namespace:WPFAppMVVM.View.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="485" Width="525">
-    <!--<Window.Resources>
+    <Window.Resources>
         <vm:UserViewModel x:Key="viewModel"/>
-    </Window.Resources>-->
+    </Window.Resources>
     <Grid Margin="0,0,0,20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -27,15 +28,41 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" Name="txtUserId" VerticalAlignment="Top" Width="178" Text="{Binding ElementName=UserGrid,Path=SelectedItem.UserId}" />
+        <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,7,0,0" Name="txtUserId" VerticalAlignment="Top" Width="178" IsReadOnly="True" Text="{Binding ElementName=UserGrid,Path=SelectedItem.UserId}" />
         <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,35,0,0" Name="txtFirstName" VerticalAlignment="Top" Width="178" Text="{Binding ElementName=UserGrid,Path=SelectedItem.FirstName}" />
         <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,62,0,0" Name="txtLastName" VerticalAlignment="Top" Width="178" Text="{Binding ElementName=UserGrid,Path=SelectedItem.LastName}" />
         <Label Content="UserId" Grid.Row="1" HorizontalAlignment="Left" Margin="12,12,0,274" Name="label1" />
         <Label Content="Last Name" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,60,0,0" Name="label2" VerticalAlignment="Top" />
         <Label Content="First Name" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,35,0,0" Name="label3" VerticalAlignment="Top" />
         <Button Content="Update" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="310,40,0,0" Name="btnUpdate"   
-                VerticalAlignment="Top" Width="141"/>
+                VerticalAlignment="Top" Width="141" Command="{Binding UpdateCommand, Source={StaticResource viewModel}}">
+            <!--This took me about 3h to figure out why it's showing an error, turns out, it's a bug in Roslyn and it gets
+            fixed at compile time-->
+            <Button.CommandParameter>
+                <MultiBinding Converter="{converters:Converter_MultipleCommandParameters}">
+                    <Binding ElementName="UserGrid" Path="SelectedItem.UserId"/>
+                    <Binding ElementName="UserGrid" Path="SelectedItem.LastName"/>
+                    <Binding ElementName="UserGrid" Path="SelectedItem.FirstName"/>
+                    <Binding ElementName="UserGrid" Path="SelectedItem.City"/>
+                    <Binding ElementName="UserGrid" Path="SelectedItem.State"/>
+                    <Binding ElementName="UserGrid" Path="SelectedItem.Country"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
         <Button Content="Insert" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="310,10,0,0" Name="btnInsert"   
+                VerticalAlignment="Top" Width="141" Command="{Binding InsertCommand, Source={StaticResource viewModel}}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{converters:Converter_MultipleCommandParameters}">
+                    <Binding ElementName="txtUserId" Path="Text"/>
+                    <Binding ElementName="txtLastName" Path="Text"/>
+                    <Binding ElementName="txtFirstName" Path="Text"/>
+                    <Binding ElementName="txtCity" Path="Text"/>
+                    <Binding ElementName="txtSTate" Path="Text"/>
+                    <Binding ElementName="txtCountry" Path="Text"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
+        <Button Content="Delete" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="310,70,0,0" Name="btnDelete"   
                 VerticalAlignment="Top" Width="141"/>
         <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="80,143,0,0" x:Name="txtCity" VerticalAlignment="Top" Width="178" Text="{Binding SelectedItem.City, ElementName=UserGrid}" />
         <Label Content="Country" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="12,141,0,0" x:Name="label2_Copy" VerticalAlignment="Top" />

@@ -5,10 +5,10 @@ using System.Windows.Input;
 
 namespace WPFAppMVVM.ViewModel.Command
 {
-    public class UpdateCommand : ICommand
+    public class InsertCommand : ICommand
     {
         private readonly UserViewModel _viewModel;
-        public UpdateCommand(UserViewModel viewModel)
+        public InsertCommand(UserViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -23,7 +23,8 @@ namespace WPFAppMVVM.ViewModel.Command
         public async void Execute(object parameter)
         {
             var arr = (object[])parameter;
-            await _viewModel.UpdateData((int)arr[0], arr[1].ToString(), arr[2].ToString(), arr[3].ToString(), arr[4].ToString(), arr[5].ToString());
+            await _viewModel.InsertData(arr[1].ToString(), arr[2].ToString(), arr[3].ToString(), arr[4].ToString(), arr[5].ToString());
+
         }
     }
 }

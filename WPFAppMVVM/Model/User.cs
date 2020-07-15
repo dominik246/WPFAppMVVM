@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +16,17 @@ namespace WPFAppMVVM.Model
         private string state;
         private string country;
 
+        private ObservableCollection<User> userList;
+
+        public ObservableCollection<User> UserList
+        {
+            get { return userList; }
+            set { userList = value; OnPropertyChanged(nameof(UserList)); }
+        }
+
+
         public int UserId
-        { 
+        {
             get
             {
                 return userId;

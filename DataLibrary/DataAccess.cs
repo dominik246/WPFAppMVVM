@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,11 +13,11 @@ namespace DataLibrary
 {
     public class DataAccess : IDataAccess
     {
-        public async Task<List<T>> LoadData<T, U>(string sql, U parameters, string connectionString)
+        public async Task<ObservableCollection<T>> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                List<T> rows = (await connection.QueryAsync<T>(sql, parameters).ConfigureAwait(false)).ToList();
+                ObservableCollection<T> rows = new ObservableCollection<T>(await connection.QueryAsync<T>(sql, parameters).ConfigureAwait(false));
 
                 return rows;
             }
