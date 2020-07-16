@@ -13,17 +13,25 @@ namespace DataLibrary
 {
     public class DataAccess : IDataAccess
     {
-        public async Task<ObservableCollection<T>> LoadData<T, U>(string sql, U parameters, string connectionString)
+        public async Task<List<T>> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                ObservableCollection<T> rows = new ObservableCollection<T>(await connection.QueryAsync<T>(sql, parameters).ConfigureAwait(false));
+                List<T> rows = (await connection.QueryAsync<T>(sql, parameters).ConfigureAwait(false)).ToList();
 
                 return rows;
             }
         }
 
         public async Task SaveData<T>(string sql, T parameters, string connectionString)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.ExecuteAsync(sql, parameters).ConfigureAwait(false);
+            }
+        }
+
+        public async Task DeleteData<T>(string sql, T parameters, string connectionString)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {

@@ -25,10 +25,5 @@ namespace WPFAppMVVM.View.Converters
         {
             return _converter ??= new Converter_MultipleCommandParameters();
         }
-
-        public Converter_MultipleCommandParameters()
-            : base()
-        {
-        }
     }
 }

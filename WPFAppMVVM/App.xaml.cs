@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
+using WPFAppMVVM.Model;
 using WPFAppMVVM.View;
 using WPFAppMVVM.ViewModel;
 
@@ -19,27 +20,6 @@ namespace WPFAppMVVM
     /// </summary>
     public partial class App : Application
     {
-        //private readonly ServiceProvider _serviceProvider;
-
-        //public App()
-        //{
-        //    var serviceCollection = new ServiceCollection();
-        //    ConfigureServices(serviceCollection);
-        //    _serviceProvider = serviceCollection.BuildServiceProvider();
-        //}
-
-        //private void ConfigureServices(IServiceCollection services)
-        //{
-        //    services.AddSingleton<IDataAccess, DataAccess>();
-        //}
-
-        internal void OnStartup(object sender, StartupEventArgs e)
-        {
-            var mainWindow = new MainPage
-            {
-                DataContext = new UserViewModel()
-            };
-            mainWindow.Show();
-        }
+        
     }
 }

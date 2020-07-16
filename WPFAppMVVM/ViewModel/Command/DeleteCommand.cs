@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using WPFAppMVVM.Model;
 
 namespace WPFAppMVVM.ViewModel.Command
 {
-    public class InsertCommand : ICommand
+    public class DeleteCommand : ICommand
     {
         private readonly IUserViewModel _viewModel;
-        public InsertCommand(IUserViewModel viewModel)
+        public DeleteCommand(IUserViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -26,8 +23,7 @@ namespace WPFAppMVVM.ViewModel.Command
 
         public async void Execute(object parameter)
         {
-            var arr = (object[])parameter;
-            await _viewModel.InsertData(arr[1].ToString(), arr[2].ToString(), arr[3].ToString(), arr[4].ToString(), arr[5].ToString());
+            await _viewModel.DeleteData(int.Parse(parameter.ToString()));
         }
     }
 }

@@ -16,15 +16,6 @@ namespace WPFAppMVVM.Model
         private string state;
         private string country;
 
-        private ObservableCollection<User> userList;
-
-        public ObservableCollection<User> UserList
-        {
-            get { return userList; }
-            set { userList = value; OnPropertyChanged(nameof(UserList)); }
-        }
-
-
         public int UserId
         {
             get

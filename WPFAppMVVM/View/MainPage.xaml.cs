@@ -1,6 +1,9 @@
-﻿using System;
+﻿using DataLibrary;
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +26,8 @@ namespace WPFAppMVVM.View
         public MainPage()
         {
             InitializeComponent();
+            UserViewModel vm = new UserViewModel();
+            DataContext = vm;
         }
     }
 }

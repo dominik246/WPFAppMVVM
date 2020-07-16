@@ -3,7 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,25 +18,37 @@ using WPFAppMVVM.ViewModel.Command;
 
 namespace WPFAppMVVM.ViewModel
 {
-    public class UserViewModel
+    public class UserViewModel : IUserViewModel
     {
-        public ObservableCollection<User> UserList { get; set; }
-        private readonly IDataAccess _dataAccess;
         public UpdateCommand UpdateCommand { get; set; }
         public InsertCommand InsertCommand { get; set; }
+        public DeleteCommand DeleteCommand { get; set; }
+        private readonly IDataAccess _dataAccess;
         public UserViewModel()
         {
             _dataAccess = new DataAccess();
 
-            UserList = GetData().Result;
-
             UpdateCommand = new UpdateCommand(this);
             InsertCommand = new InsertCommand(this);
+            DeleteCommand = new DeleteCommand(this);
         }
 
-        private async Task<ObservableCollection<User>> GetData()
+        private ObservableCollection<User> userList;
+        public ObservableCollection<User> UserList
         {
-            const string sql = "select * from [dbo].[Users]";
+            get
+            {
+                return userList ??= new ObservableCollection<User>(GetData().Result);
+            }
+            set
+            {
+                userList = value;
+            }
+        }
+
+        private async Task<List<User>> GetData()
+        {
+            string sql = "select * from [dbo].[Users]";
             return await _dataAccess.LoadData<User, dynamic>(sql, new { }, Environment.GetEnvironmentVariable("connectionString")).ConfigureAwait(false);
         }
 
@@ -42,7 +58,7 @@ namespace WPFAppMVVM.ViewModel
                 $"values ('{lastName}', '{firstName}', '{city}', '{state}', '{country}');";
             await _dataAccess.SaveData(sql, new { }, Environment.GetEnvironmentVariable("connectionString"));
 
-            UserList = await GetData();
+            UserList.Add((await GetData())[^1]);
         }
 
         public async Task<IList<User>> UpdateData(int userId, string lastName, string firstName, string city, string state, string country)
@@ -51,6 +67,14 @@ namespace WPFAppMVVM.ViewModel
                 $"City='{city}', State='{state}', Country='{country}' " +
                 $"where UserId={userId};";
             return await _dataAccess.LoadData<User, dynamic>(sql, new { }, Environment.GetEnvironmentVariable("connectionString"));
+        }
+
+        public async Task DeleteData(int userId)
+        {
+            string sql = $"delete from [dbo].Users where UserId='{userId}'";
+            await _dataAccess.DeleteData(sql, new { }, Environment.GetEnvironmentVariable("connectionString"));
+
+            UserList.RemoveAt(UserList.IndexOf(UserList.First(u => u.UserId == userId)));
         }
     }
 }

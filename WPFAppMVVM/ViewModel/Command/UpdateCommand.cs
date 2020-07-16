@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using WPFAppMVVM.Model;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace WPFAppMVVM.ViewModel.Command
 {
     public class UpdateCommand : ICommand
     {
-        private readonly UserViewModel _viewModel;
-        public UpdateCommand(UserViewModel viewModel)
+        private readonly IUserViewModel _viewModel;
+        public UpdateCommand(IUserViewModel viewModel)
         {
             _viewModel = viewModel;
         }
