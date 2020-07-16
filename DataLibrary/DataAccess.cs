@@ -1,13 +1,9 @@
 ﻿using Dapper;
 
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataLibrary
@@ -20,7 +16,7 @@ namespace DataLibrary
             {
                 List<T> rows = (await connection.QueryAsync<T>(sql, parameters).ConfigureAwait(false)).ToList();
 
-                if(rows.Count == 0)
+                if (rows.Count == 0)
                 {
                     await InitialLaunch(connectionString);
                     rows = (await connection.QueryAsync<T>(sql, parameters).ConfigureAwait(false)).ToList();

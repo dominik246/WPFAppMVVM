@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using WPFAppMVVM.Model;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 
 namespace WPFAppMVVM.ViewModel.Command
 {
