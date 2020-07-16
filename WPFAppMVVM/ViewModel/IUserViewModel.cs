@@ -14,7 +14,7 @@ namespace WPFAppMVVM.ViewModel
         ObservableCollection<User> UserList { get; set; }
 
         Task InsertData(string lastName, string firstName, string city, string state, string country);
-        Task<IList<User>> UpdateData(int userId, string lastName, string firstName, string city, string state, string country);
+        Task UpdateData(int userId, string lastName, string firstName, string city, string state, string country);
         Task DeleteData(int userId);
     }
 }

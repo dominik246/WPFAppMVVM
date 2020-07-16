@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using WPFAppMVVM.Model;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Windows;
 
 namespace WPFAppMVVM.ViewModel.Command
 {
@@ -27,7 +28,10 @@ namespace WPFAppMVVM.ViewModel.Command
         public async void Execute(object parameter)
         {
             var arr = (object[])parameter;
-            await _viewModel.UpdateData((int)arr[0], arr[1].ToString(), arr[2].ToString(), arr[3].ToString(), arr[4].ToString(), arr[5].ToString());
+            if (int.TryParse(arr[0].ToString(), out int userId))
+                await _viewModel.UpdateData(userId, arr[1].ToString(), arr[2].ToString(), arr[3].ToString(), arr[4].ToString(), arr[5].ToString());
+            else
+                MessageBox.Show("You must click a field first.");
         }
     }
 }

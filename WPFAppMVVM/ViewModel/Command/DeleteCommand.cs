@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace WPFAppMVVM.ViewModel.Command
@@ -23,7 +24,10 @@ namespace WPFAppMVVM.ViewModel.Command
 
         public async void Execute(object parameter)
         {
-            await _viewModel.DeleteData(int.Parse(parameter.ToString()));
+            if (int.TryParse(parameter.ToString(), out int userId))
+                await _viewModel.DeleteData(userId);
+            else
+                MessageBox.Show("Select a field first.");
         }
     }
 }

@@ -61,12 +61,12 @@ namespace WPFAppMVVM.ViewModel
             UserList.Add((await GetData())[^1]);
         }
 
-        public async Task<IList<User>> UpdateData(int userId, string lastName, string firstName, string city, string state, string country)
+        public async Task UpdateData(int userId, string lastName, string firstName, string city, string state, string country)
         {
             string sql = $"update [dbo].[Users] set LastName='{lastName}', FirstName='{firstName}', " +
                 $"City='{city}', State='{state}', Country='{country}' " +
                 $"where UserId={userId};";
-            return await _dataAccess.LoadData<User, dynamic>(sql, new { }, Environment.GetEnvironmentVariable("connectionString"));
+            await _dataAccess.SaveData<dynamic>(sql, new { }, Environment.GetEnvironmentVariable("connectionString"));
         }
 
         public async Task DeleteData(int userId)
